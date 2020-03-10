@@ -13,7 +13,6 @@ function createElement(elementType, tagClass, id, textContent) {
     return name;
 }
 
-
 /* ---------------------------------------------Start of head div--------------------------------------------- */
 
 //create div for header
@@ -63,8 +62,9 @@ function checkWin() {
                 gameOn = false;
         }
     }
+
     roundCount++
-    if (roundCount >= 9) {
+    if (roundCount >= 9 && gameOn === true) {
         subHead.innerHTML = '<h4>It\'s a draw!</h4>'
         gameOn = false;
     }
