@@ -1,7 +1,7 @@
 //everything goes in this div so that elements appear cleaner in dev tools
 //if put straight into body, everything is created after script tag
-ttt_App = document.getElementById('App')
-ttt_App.className = 'container'
+tttApp = document.getElementById('App')
+tttApp.className = 'container'
 
 //function to create an element
 function createElement(elementType, tagClass, id, textContent) {
@@ -17,17 +17,28 @@ function createElement(elementType, tagClass, id, textContent) {
 
 //create div for header
 let headDiv = createElement('div', ['container', 'text-center'], 'headDiv', '<h1>Tic-Tac-Toe</h1>');
-ttt_App.appendChild(headDiv);
+tttApp.appendChild(headDiv);
 
 let subHead = createElement('h4', [], 'subHead', 'X \'s turn')
 headDiv.appendChild(subHead)
 
 /* ---------------------------------------------Start of game div---------------------------------------------*/
 
-//create div for game
-let gameDiv = createElement('div', ['container'], 'gameDiv', '');
-ttt_App.appendChild(gameDiv)
+//main game div which is a row
+let mainDiv = createElement('div', ['row', 'text-center', 'cotainer'], 'mainDiv', '')
+tttApp.appendChild(mainDiv)
 
+//left filler column for design
+let leftFiller = createElement('div', ['col-lg-4'], 'leftFiller', '')
+mainDiv.appendChild(leftFiller)
+
+//create div for game. also is a BS column
+let gameDiv = createElement('div', ['container', 'col-lg-4', 'col-sm-12'], 'gameDiv', '');
+mainDiv.appendChild(gameDiv)
+
+//right filler column for design
+let rightFiller = createElement('div', ['col-lg-4'], 'leftFiller', '')
+mainDiv.appendChild(rightFiller)
 
 
 //this array is to be used later in the following function. these are all of the win coniditions
@@ -46,25 +57,31 @@ let winConditions = [
 let roundCount = 0;
 function checkWin() {
     for (let i = 0; i < winConditions.length; i++) {
-        let firstPosition = document.getElementById(winConditions[i][0]);
-        let secondPosition = document.getElementById(winConditions[i][1]);
-        let thirdPosition = document.getElementById(winConditions[i][2]);
+        let firstPos = document.getElementById(winConditions[i][0]);
+        let secondPos = document.getElementById(winConditions[i][1]);
+        let thirdPos = document.getElementById(winConditions[i][2]);
 
-        if (firstPosition.innerHTML === secondPosition.innerHTML && 
-            secondPosition.innerHTML === thirdPosition.innerHTML && 
-            thirdPosition.innerHTML === '<h2>X</h2>') {
+        if (firstPos.innerHTML === secondPos.innerHTML && 
+            secondPos.innerHTML === thirdPos.innerHTML && 
+            thirdPos.innerHTML === '<h2>X</h2>') {
                 subHead.innerHTML = '<h4>X Wins!</h4>';
                 gameOn = false;
-        } else if (firstPosition.innerHTML === secondPosition.innerHTML && 
-            secondPosition.innerHTML === thirdPosition.innerHTML && 
-            thirdPosition.innerHTML === '<h2>O</h2>') {
+                firstPos.className += ' bg-primary'
+                secondPos.className += ' bg-primary'
+                thirdPos.className += ' bg-primary'
+        } else if (firstPos.innerHTML === secondPos.innerHTML && 
+            secondPos.innerHTML === thirdPos.innerHTML && 
+            thirdPos.innerHTML === '<h2>O</h2>') {
                 subHead.innerHTML = '<h4>O Wins!</h4>';
                 gameOn = false;
+                firstPos.className += ' bg-primary'
+                secondPos.className += ' bg-primary'
+                thirdPos.className += ' bg-primary'
         }
     }
 
     roundCount++
-    if (roundCount >= 9 && gameOn === true) {
+    if (roundCount >= 9 && gameOn) {
         subHead.innerHTML = '<h4>It\'s a draw!</h4>'
         gameOn = false;
     }
@@ -78,7 +95,7 @@ function clickBox(col) {
     if (playerOne === true && col.innerHTML === '' && gameOn) {
         col.innerHTML = '<h2>X</h2>';
         subHead.innerHTML = 'O\'s turn';
-        col.className += ' true';
+        col.className;
         playerOne = false;
         checkWin();
     } else if (playerOne === false && col.innerHTML === '' && gameOn) {
@@ -98,7 +115,7 @@ for (let i = 0; i < 3; i++) {
     for (let i = 0; i < 3; i++) {
         let col = createElement('div', ['col-4', 'text-center', 'border', 'p-5'], 'boardCol' + j, '')
         j++
-        col.addEventListener('click', function () { clickBox(col) })
+        col.addEventListener('click', function() { clickBox(col) })
         row.appendChild(col)
     }
 }
@@ -106,15 +123,15 @@ for (let i = 0; i < 3; i++) {
 //
 
 /* ---------------------------------------------Start of button Div----------------------------------------------- */
-
 //create div for button
-let footDiv = createElement('div', ['container'], 'footDiv', '')
-ttt_App.appendChild(footDiv);
+let footDiv = createElement('div', ['container', 'col-4', 'text-center'], 'footDiv', '');
+tttApp.appendChild(footDiv);
 
 //function to restart game by looping over each column and setting to empty string
 function restartGame() {
     for (let i = 1; i <= 9; i++) {
-        document.getElementById('boardCol' + i).innerHTML = ''
+        document.getElementById('boardCol' + i).innerHTML = '';
+        document.getElementById('boardCol' + i).className = 'col-4 text-center border p-5';
         gameOn = true;
         roundCount = 0;
     }
@@ -122,6 +139,6 @@ function restartGame() {
 }
 
 //creating restart button. has to be after restartGame()
-let restartBtn = createElement('button', ['btn', 'btn-primary'], 'restartBtn', 'Restart!')
-restartBtn.onclick = function () { restartGame() };
-footDiv.appendChild(restartBtn)
+let restartBtn = createElement('button', ['btn', 'btn-primary', 'mt-5'], 'restartBtn', 'Restart!');
+restartBtn.onclick = function () {restartGame()};
+footDiv.appendChild(restartBtn);
