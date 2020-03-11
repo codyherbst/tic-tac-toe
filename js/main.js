@@ -22,6 +22,15 @@ tttApp.appendChild(headDiv);
 let subHead = createElement('h4', [], 'subHead', 'X \'s turn')
 headDiv.appendChild(subHead)
 
+let scoreDiv = createElement('div', ['row'], 'scoreDiv', '')
+headDiv.appendChild(scoreDiv)
+
+let xScoreDiv = createElement('h6', ['col'], 'xScoreDiv', 'X\'s Score : 0')
+scoreDiv.appendChild(xScoreDiv)
+
+let oScoreDiv = createElement('h6', ['col'], 'oScoreDiv', 'O\'s Score : 0')
+scoreDiv.appendChild(oScoreDiv)
+
 /* ---------------------------------------------Start of game div---------------------------------------------*/
 
 //main game div which is a row
@@ -41,7 +50,7 @@ let rightFiller = createElement('div', ['col-lg-4'], 'leftFiller', '')
 mainDiv.appendChild(rightFiller)
 
 
-//this array is to be used later in the following function. these are all of the win coniditions
+//this array is to be used later in the following function. these are all of the win coniditions based on tile id's
 let winConditions = [
     ['boardCol1', 'boardCol2', 'boardCol3'],
     ['boardCol1', 'boardCol5', 'boardCol9'],
@@ -54,6 +63,8 @@ let winConditions = [
 ]
 
 //using above array check through and see if there's a win condition
+let xScore = 0;
+let oScore = 0;
 let roundCount = 0;
 function checkWin() {
     for (let i = 0; i < winConditions.length; i++) {
@@ -66,9 +77,15 @@ function checkWin() {
             thirdPos.innerHTML === '<h2>X</h2>') {
                 subHead.innerHTML = '<h4>X Wins!</h4>';
                 gameOn = false;
+
                 firstPos.className += ' bg-primary'
                 secondPos.className += ' bg-primary'
                 thirdPos.className += ' bg-primary'
+
+                xScore++
+                xScoreDiv.innerHTML = 'X\'s score : ' + xScore
+                break;
+
         } else if (firstPos.innerHTML === secondPos.innerHTML && 
             secondPos.innerHTML === thirdPos.innerHTML && 
             thirdPos.innerHTML === '<h2>O</h2>') {
@@ -77,6 +94,9 @@ function checkWin() {
                 firstPos.className += ' bg-primary'
                 secondPos.className += ' bg-primary'
                 thirdPos.className += ' bg-primary'
+
+                oScore++
+                oScoreDiv.innerHTML = 'O\'s score : ' + oScore
         }
     }
 
@@ -98,6 +118,7 @@ function clickBox(col) {
         col.className;
         playerOne = false;
         checkWin();
+
     } else if (playerOne === false && col.innerHTML === '' && gameOn) {
         col.innerHTML = '<h2>O</h2>';
         subHead.innerHTML = 'X\'s turn';
@@ -112,6 +133,7 @@ let j = 1;
 for (let i = 0; i < 3; i++) {
     let row = createElement('div', ['row'], '', '')
     gameDiv.appendChild(row)
+
     for (let i = 0; i < 3; i++) {
         let col = createElement('div', ['col-4', 'text-center', 'border', 'p-5'], 'boardCol' + j, '')
         j++
@@ -142,3 +164,5 @@ function restartGame() {
 let restartBtn = createElement('button', ['btn', 'btn-primary', 'mt-5'], 'restartBtn', 'Restart!');
 restartBtn.onclick = function () {restartGame()};
 footDiv.appendChild(restartBtn);
+
+/* ---------------------------------------------Start of AI--------------------------------------------- */
